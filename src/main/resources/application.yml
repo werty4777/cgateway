@@ -1,0 +1,53 @@
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+
+info:
+  component: Zuul-proxy-server
+
+
+spring:
+  application:
+    name: zuulproxyServerAuth
+
+
+server:
+  port: 8766
+
+
+endpoints:
+  restart:
+    enabled: true
+
+zuul:
+
+  host:
+    socketTimeoutMillis: 1000000
+    connect-timeout-millis: 90000
+  sensitiveHeaders:
+  routes:
+    pedidoservice:
+      path: /pedidos/**
+      serviceId: pedidosservice
+    productoservice:
+      path: /produtos/**
+      serviceId: productoservice
+    accountservice:
+      path: /account/**
+      serviceId: accountservice
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+ribbon:
+  eureka:
+    enabled: true
